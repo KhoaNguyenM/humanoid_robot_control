@@ -9,10 +9,10 @@ This roadmap tracks our progress toward full humanoid autonomy.
 - [x] **Robot Simulation Setup**
     - [x] Integration of high-fidelity humanoid assets in NVIDIA Isaac Sim/Isaac Lab.
     - [x] Environment configuration for realistic physics interactions.
-- [ ] **Sensor & Signal Integration (ROS2 / OmniGraph)**
+- [x] **Sensor & Signal Integration (ROS2 / OmniGraph)**
     - [x] IMU data acquisition and analysis.
-    - [ ] Joint state reading and command writing.
-    - [ ] RGB-D Camera and Depth sensor integration.
+    - [x] Joint state reading and command writing.
+    - [ ] RGB-D Camera and Depth sensor integration. (Planned)
 - [ ] **Locomotion Control (RL Policies)**
     - [ ] Implementation of vendor-provided locomotion policies.
     - [ ] Testing stability and gait performance for Unitree G1 and H1.
@@ -23,7 +23,7 @@ This roadmap tracks our progress toward full humanoid autonomy.
     - [ ] Model Development and Architecture Design.
     - [ ] Training, Hyperparameter Tuning, and Evaluation.
 - [ ] **Autonomous AI Deployment**
-    - Deploying trained RL/WBC models into the integrated system for real-time control.
+    - [ ] Deploying trained RL/WBC models into the integrated system for real-time control.
 
 ## System Architecture & Physics
 ### Robot Assets
