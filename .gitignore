@@ -1,4 +1,6 @@
 ./unitree_ros
 ./unitree_sim_isaaclab
 unitree_policy.examples
-h1_ros2_control/h1_policy_node.py
+# h1_ros2_control/h1_policy_node.py
+
+!unitree_policy.examples/explain_extension.md
