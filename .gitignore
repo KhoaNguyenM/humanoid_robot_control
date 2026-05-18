@@ -3,4 +3,5 @@
 
 unitree_policy.examples/*
 !unitree_policy.examples/explain_extension.md
+!unitree_policy.examples/h1_isaacsim_simulation_analysis.md
 
