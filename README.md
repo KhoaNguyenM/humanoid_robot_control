@@ -14,8 +14,9 @@ This roadmap tracks our progress toward full humanoid autonomy.
     - [x] Joint state reading and command writing.
     - [ ] RGB-D Camera and Depth sensor integration. (Planned)
 - [ ] **Locomotion Control (RL Policies)**
-    - [ ] Implementation of vendor-provided locomotion policies.
-    - [ ] Testing stability and gait performance for Unitree G1 and H1.
+    - [x] Implementation of vendor-provided locomotion policies.
+    - [x] Testing stability and gait performance for Unitree H1.
+    - [ ] Testing stability and gait performance for Unitree G1 (loco & teleop).
 - [ ] **Manipulation & Whole-Body Control (WBC)**
     - [ ] Implementation of WBC models to coordinate complex upper-limb manipulation with stable lower-body locomotion.
 - [ ] **Full RL Training Pipeline**
@@ -38,6 +39,12 @@ Currently, the system is developed and validated on the following humanoid platf
 *   **Visual Perception**: (Planned) RGB-D sensors for spatial awareness and object detection.
 
 ## Results
+### 1.1 ROS2 Control for Unitree H1 in Isaac Sim
+Successfully controlled the Unitree H1 humanoid in Isaac Sim through ROS2, using policy observations from `/imu`, `/joint_states`, `/clock`, and command actions through `/joint_command`.
+
+![H1 ROS2 policy control diagram](document/H1_diagram.png)
+
+### 1.2 ROS2 Control for Unitree G1 in Isaac Sim
 > [!NOTE]
 > **Status: In Development**
 > The project is currently in the active development phase. Performance metrics and demonstration recordings will be added here as milestones are reached.
