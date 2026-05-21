@@ -1,0 +1,45 @@
+metadata:
+  name: g1_environment_only
+  description: >
+    Environment-only Isaac Sim configuration. This file intentionally excludes
+    robot, actuator, action, observation, reward, and policy settings.
+  reference:
+    - RL_control/H1_control/h1_policy/h1_env.yaml
+    - unitree_sim_isaaclab task scene and simulation configs
+
+stage:
+  up_axis: Z
+  meters_per_unit: 1.0
+  kilograms_per_unit: 1.0
+  save_as: "/home/khoa-ng/Job_Project/My_Code/humanoid_robot_control/RL_control/G1_control/environment_configured.usd"
+
+simulation:
+  physics_scene_path: /physicsScene
+  dt: 0.005
+  time_steps_per_second: 200.0
+  gravity: [0.0, 0.0, -9.81]
+  decimation_note: 4
+  physx:
+    enabled: true
+    # Isaac Sim 5.1 stores physxScene:solverType as a TfToken.
+    # Use "TGS" for the temporal Gauss-Seidel solver, or "PGS" for projected Gauss-Seidel.
+    solver_type: TGS
+    enable_ccd: false
+    enable_stabilization: true
+    bounce_threshold_velocity: 0.01
+    friction_offset_threshold: 0.04
+    friction_correlation_distance: 0.00625
+    gpu_found_lost_pairs_capacity: 2097152
+    gpu_found_lost_aggregate_pairs_capacity: 4194304
+    gpu_total_aggregate_pairs_capacity: 16384
+    gpu_collision_stack_size: 67108864
+    gpu_heap_capacity: 67108864
+    gpu_temp_buffer_capacity: 16777216
+    gpu_max_num_partitions: 8
+  physics_material:
+    prim_path: /World/PhysicsMaterials/default_environment
+    static_friction: 1.0
+    dynamic_friction: 1.0
+    restitution: 0.0
+    friction_combine_mode: max
+    restitution_combine_mode: max
