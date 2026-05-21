@@ -20,7 +20,7 @@ import yaml
 from pxr import Gf, PhysxSchema, Sdf, UsdGeom, UsdPhysics, UsdShade
 
 
-CONFIG_PATH = "/home/khoa-ng/Job_Project/My_Code/humanoid_robot_control/RL_control/G1_control/g1_env_only.yaml"
+CONFIG_PATH = "/home/khoa-ng/Job_Project/My_Code/humanoid_robot_control/RL_control/G1_control/env_config/g1_env_only.yaml"
 
 
 _PHYSX_ATTRS: dict[str, tuple[list[str], Any]] = {

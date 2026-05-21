@@ -1,0 +1,320 @@
+metadata:
+  name: g1_29dof_wholebody_dex3_existing_robot_only
+  description: >
+    Robot-only configuration for an already-added Unitree G1 29-DOF robot
+    with Dex3 hands in an open Isaac Sim stage. This file intentionally
+    excludes environment, terrain, cameras, observations, rewards, policies,
+    and DDS runtime settings.
+  isaac_sim_version: "5.1.0"
+  source:
+    isaaclab_config: unitree_sim_isaaclab/robots/unitree.py::G129_CFG_WITH_DEX3_WHOLEBODY
+    isaaclab_robot_preset: unitree_sim_isaaclab/tasks/common_config/robot_configs.py::G1RobotPresets.g1_29dof_dex3_wholebody
+    asset_conversion_config: unitree_sim_isaaclab/assets/robots/g1-29dof_wholebody_dex3/config.yaml
+    h1_reference_style: RL_control/H1_control/h1_policy/h1_env.yaml
+
+robot:
+  name: g1_29dof_with_dex3_rev_1_0
+  expected_usd_path: /home/khoa-ng/Job_Project/My_Code/humanoid_robot_control/unitree_sim_isaaclab/assets/robots/g1-29dof_wholebody_dex3/g1_29dof_with_dex3_rev_1_0.usd
+  target_prim_path: /World/g1_29dof_with_dex3_rev_1_0
+  apply_mode: existing_robot
+  require_existing_prim: true
+  require_matching_usd_reference: true
+  make_subtree_non_instanceable: true
+  independent_subtree: true
+  note: >
+    The Isaac Sim script applies schema and drive overrides onto this robot
+    prim and its descendants. It does not create a new robot reference.
+
+debug_apply_groups:
+  check_existing_prim_and_usd: true
+  make_subtree_non_instanceable: true
+
+  root_transform: false
+  articulation_root: true
+  rigid_body_props: true
+  contact_report_api: true
+
+  joint_drive_properties: false   ##################
+  joint_drive_targets: true
+  joint_state: false
+
+  validation: true
+  summary_attributes: true
+  select_robot_after_load: true
+  save_stage_after_load: false
+
+spawn:
+  activate_contact_sensors: true
+  rigid_props:
+    disable_gravity: false
+    retain_accelerations: true
+    linear_damping: 0.0
+    angular_damping: 0.0
+    max_linear_velocity: 1000.0
+    max_angular_velocity: 1000.0
+    max_depenetration_velocity: 1.0
+  articulation_props:
+    articulation_enabled: true
+    enabled_self_collisions: false
+    solver_position_iteration_count: 4
+    solver_velocity_iteration_count: 1
+    fix_root_link: false
+
+init_state:
+  apply_root_transform_from_yaml: false
+  pos: [0.0, 0.0, 0.80]
+  rot: [1.0, 0.0, 0.0, 0.0]
+  lin_vel: [0.0, 0.0, 0.0]
+  ang_vel: [0.0, 0.0, 0.0]
+  joint_position_unit: radians
+  joint_velocity_unit: radians_per_second
+  joint_pos:
+    left_hip_pitch_joint: -0.1
+    left_hip_roll_joint: 0.0
+    left_hip_yaw_joint: 0.0
+    left_knee_joint: 0.3
+    left_ankle_pitch_joint: -0.2
+    left_ankle_roll_joint: 0.0
+    right_hip_pitch_joint: -0.1
+    right_hip_roll_joint: 0.0
+    right_hip_yaw_joint: 0.0
+    right_knee_joint: 0.3
+    right_ankle_pitch_joint: -0.2
+    right_ankle_roll_joint: 0.0
+    waist_yaw_joint: 0.0
+    waist_roll_joint: 0.0
+    waist_pitch_joint: 0.0
+    left_shoulder_pitch_joint: 0.0
+    left_shoulder_roll_joint: 0.25
+    left_shoulder_yaw_joint: 0.0
+    left_elbow_joint: 0.97
+    left_wrist_roll_joint: 0.15
+    left_wrist_pitch_joint: 0.0
+    left_wrist_yaw_joint: 0.0
+    right_shoulder_pitch_joint: 0.0
+    right_shoulder_roll_joint: -0.25
+    right_shoulder_yaw_joint: 0.0
+    right_elbow_joint: 0.97
+    right_wrist_roll_joint: -0.15
+    right_wrist_pitch_joint: 0.0
+    right_wrist_yaw_joint: 0.0
+    left_hand_index_0_joint: 0.0
+    left_hand_middle_0_joint: 0.0
+    left_hand_thumb_0_joint: 0.0
+    left_hand_index_1_joint: 0.0
+    left_hand_middle_1_joint: 0.0
+    left_hand_thumb_1_joint: 0.0
+    left_hand_thumb_2_joint: 0.0
+    right_hand_index_0_joint: 0.0
+    right_hand_middle_0_joint: 0.0
+    right_hand_thumb_0_joint: 0.0
+    right_hand_index_1_joint: 0.0
+    right_hand_middle_1_joint: 0.0
+    right_hand_thumb_1_joint: 0.0
+    right_hand_thumb_2_joint: 0.0
+  joint_vel:
+    .*: 0.0
+
+isaaclab_runtime:
+  soft_joint_pos_limit_factor: 0.90
+  collision_group: 0
+  debug_vis: false
+
+actuators:
+  legs:
+    class_type: isaaclab.actuators:ImplicitActuatorCfg
+    drive_type: force
+    target_type: position
+    joint_names_expr:
+      - .*_hip_yaw_joint
+      - .*_hip_roll_joint
+      - .*_hip_pitch_joint
+      - .*_knee_joint
+      - .*waist.*
+    effort_limit_sim:
+      .*_hip_yaw_joint: 88.0
+      .*_hip_roll_joint: 139.0
+      .*_hip_pitch_joint: 88.0
+      .*_knee_joint: 139.0
+      .*waist_yaw_joint: 88.0
+      .*waist_roll_joint: 35.0
+      .*waist_pitch_joint: 35.0
+    velocity_limit_sim:
+      .*_hip_yaw_joint: 32.0
+      .*_hip_roll_joint: 20.0
+      .*_hip_pitch_joint: 32.0
+      .*_knee_joint: 20.0
+      .*waist_yaw_joint: 32.0
+      .*waist_roll_joint: 30.0
+      .*waist_pitch_joint: 30.0
+    stiffness:
+      left_hip_pitch_joint: 100.0
+      left_hip_roll_joint: 100.0
+      left_hip_yaw_joint: 100.0
+      left_knee_joint: 150.0
+      right_hip_pitch_joint: 100.0
+      right_hip_roll_joint: 100.0
+      right_hip_yaw_joint: 100.0
+      right_knee_joint: 150.0
+      waist_yaw_joint: 200.0
+      waist_roll_joint: 200.0
+      waist_pitch_joint: 200.0
+    damping:
+      left_hip_pitch_joint: 2.0
+      left_hip_roll_joint: 2.0
+      left_hip_yaw_joint: 2.0
+      left_knee_joint: 4.0
+      right_hip_pitch_joint: 2.0
+      right_hip_roll_joint: 2.0
+      right_hip_yaw_joint: 2.0
+      right_knee_joint: 4.0
+      waist_yaw_joint: 5.0
+      waist_roll_joint: 5.0
+      waist_pitch_joint: 5.0
+    armature: 0.01
+    friction: null
+
+  feet:
+    class_type: isaaclab.actuators:ImplicitActuatorCfg
+    drive_type: force
+    target_type: position
+    joint_names_expr:
+      - .*_ankle_pitch_joint
+      - .*_ankle_roll_joint
+    effort_limit_sim:
+      .*_ankle_pitch_joint: 35.0
+      .*_ankle_roll_joint: 35.0
+    velocity_limit_sim:
+      .*_ankle_pitch_joint: 30.0
+      .*_ankle_roll_joint: 30.0
+    stiffness:
+      left_ankle_pitch_joint: 40.0
+      left_ankle_roll_joint: 40.0
+      right_ankle_pitch_joint: 40.0
+      right_ankle_roll_joint: 40.0
+    damping:
+      left_ankle_pitch_joint: 2.0
+      left_ankle_roll_joint: 2.0
+      right_ankle_pitch_joint: 2.0
+      right_ankle_roll_joint: 2.0
+    armature: 0.01
+    friction: null
+
+  shoulders:
+    class_type: isaaclab.actuators:ImplicitActuatorCfg
+    drive_type: force
+    target_type: position
+    joint_names_expr:
+      - .*_shoulder_pitch_joint
+      - .*_shoulder_roll_joint
+    effort_limit_sim:
+      .*_shoulder_pitch_joint: 25.0
+      .*_shoulder_roll_joint: 25.0
+    velocity_limit_sim:
+      .*_shoulder_pitch_joint: 37.0
+      .*_shoulder_roll_joint: 37.0
+    stiffness:
+      left_shoulder_pitch_joint: 40.0
+      left_shoulder_roll_joint: 40.0
+      right_shoulder_pitch_joint: 40.0
+      right_shoulder_roll_joint: 40.0
+    damping:
+      left_shoulder_pitch_joint: 10.0
+      left_shoulder_roll_joint: 10.0
+      right_shoulder_pitch_joint: 10.0
+      right_shoulder_roll_joint: 10.0
+    armature: 0.01
+    friction: null
+
+  arms:
+    class_type: isaaclab.actuators:ImplicitActuatorCfg
+    drive_type: force
+    target_type: position
+    joint_names_expr:
+      - .*_shoulder_yaw_joint
+      - .*_elbow_joint
+    effort_limit_sim:
+      .*_shoulder_yaw_joint: 25.0
+      .*_elbow_joint: 25.0
+    velocity_limit_sim:
+      .*_shoulder_yaw_joint: 37.0
+      .*_elbow_joint: 37.0
+    stiffness:
+      left_shoulder_yaw_joint: 40.0
+      left_elbow_joint: 40.0
+      right_shoulder_yaw_joint: 40.0
+      right_elbow_joint: 40.0
+    damping:
+      left_shoulder_yaw_joint: 10.0
+      left_elbow_joint: 10.0
+      right_shoulder_yaw_joint: 10.0
+      right_elbow_joint: 10.0
+    armature: 0.01
+    friction: null
+
+  wrist:
+    class_type: isaaclab.actuators:ImplicitActuatorCfg
+    drive_type: force
+    target_type: position
+    joint_names_expr:
+      - .*_wrist_.*
+    effort_limit_sim:
+      .*_wrist_yaw_joint: 5.0
+      .*_wrist_roll_joint: 25.0
+      .*_wrist_pitch_joint: 5.0
+    velocity_limit_sim:
+      .*_wrist_yaw_joint: 22.0
+      .*_wrist_roll_joint: 37.0
+      .*_wrist_pitch_joint: 22.0
+    stiffness:
+      left_wrist_roll_joint: 40.0
+      left_wrist_pitch_joint: 40.0
+      left_wrist_yaw_joint: 40.0
+      right_wrist_roll_joint: 40.0
+      right_wrist_pitch_joint: 40.0
+      right_wrist_yaw_joint: 40.0
+    damping:
+      left_wrist_roll_joint: 10.0
+      left_wrist_pitch_joint: 10.0
+      left_wrist_yaw_joint: 10.0
+      right_wrist_roll_joint: 10.0
+      right_wrist_pitch_joint: 10.0
+      right_wrist_yaw_joint: 10.0
+    armature: 0.01
+    friction: null
+
+  hands:
+    class_type: isaaclab.actuators:ImplicitActuatorCfg
+    drive_type: force
+    target_type: position
+    joint_names_expr:
+      - .*_hand_index_.*_joint
+      - .*_hand_middle_.*_joint
+      - .*_hand_thumb_.*_joint
+    effort_limit: 300
+    velocity_limit: 100.0
+    stiffness:
+      .*: 100.0
+    damping:
+      .*: 10.0
+    armature:
+      .*: 0.1
+    friction: null
+
+validation:
+  expected_joint_count: 43
+  fail_on_missing_configured_joints: false
+  fail_on_zero_actuator_matches: false
+
+script_options:
+  # Kept for compatibility. The script now reads debug_apply_groups first.
+  apply_root_transform_from_yaml: false
+  apply_joint_drive_targets_from_init_state: false
+  apply_joint_state_from_init_state: false
+  apply_rigid_props_to_all_rigid_bodies: false
+  apply_articulation_root_to_robot_prim: false
+  apply_contact_report_api: false
+  make_subtree_non_instanceable: false
+  write_config_summary_attributes: true
+  select_robot_after_load: true
+  save_stage_after_load: false

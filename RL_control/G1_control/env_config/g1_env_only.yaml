@@ -11,7 +11,7 @@ stage:
   up_axis: Z
   meters_per_unit: 1.0
   kilograms_per_unit: 1.0
-  save_as: "/home/khoa-ng/Job_Project/My_Code/humanoid_robot_control/RL_control/G1_control/environment_configured.usd"
+  save_as: "/home/khoa-ng/Job_Project/My_Code/humanoid_robot_control/RL_control/G1_control/env_config/environment_configured.usd"
 
 simulation:
   physics_scene_path: /physicsScene
