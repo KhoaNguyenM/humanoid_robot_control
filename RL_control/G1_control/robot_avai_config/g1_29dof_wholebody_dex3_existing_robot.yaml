@@ -34,8 +34,10 @@ debug_apply_groups:
   rigid_body_props: true
   contact_report_api: true
 
+
+  # Đánh giá các tác động lên unitree simulation
   joint_drive_properties: false   ##################
-  joint_drive_targets: true
+  joint_drive_targets: false
   joint_state: false
 
   validation: true
