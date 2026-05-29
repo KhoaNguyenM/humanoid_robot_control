@@ -134,22 +134,22 @@ actuators:
       - .*_hip_pitch_joint
       - .*_knee_joint
       - .*waist.*
-    effort_limit_sim:
-      .*_hip_yaw_joint: 88.0
-      .*_hip_roll_joint: 139.0
-      .*_hip_pitch_joint: 88.0
-      .*_knee_joint: 139.0
-      .*waist_yaw_joint: 88.0
-      .*waist_roll_joint: 35.0
-      .*waist_pitch_joint: 35.0
-    velocity_limit_sim:
-      .*_hip_yaw_joint: 32.0
-      .*_hip_roll_joint: 20.0
-      .*_hip_pitch_joint: 32.0
-      .*_knee_joint: 20.0
-      .*waist_yaw_joint: 32.0
-      .*waist_roll_joint: 30.0
-      .*waist_pitch_joint: 30.0
+    # effort_limit_sim:
+    #   .*_hip_yaw_joint: 88.0
+    #   .*_hip_roll_joint: 139.0
+    #   .*_hip_pitch_joint: 88.0
+    #   .*_knee_joint: 139.0
+    #   .*waist_yaw_joint: 88.0
+    #   .*waist_roll_joint: 35.0
+    #   .*waist_pitch_joint: 35.0
+    # velocity_limit_sim:  # deg/s for Isaac Sim angular joints
+    #   .*_hip_yaw_joint: 1833.46494
+    #   .*_hip_roll_joint: 1145.91559
+    #   .*_hip_pitch_joint: 1833.46494
+    #   .*_knee_joint: 1145.91559
+    #   .*waist_yaw_joint: 1833.46494
+    #   .*waist_roll_joint: 1718.87339
+    #   .*waist_pitch_joint: 1718.87339
     stiffness:
       left_hip_pitch_joint: 100.0
       left_hip_roll_joint: 100.0
@@ -184,12 +184,12 @@ actuators:
     joint_names_expr:
       - .*_ankle_pitch_joint
       - .*_ankle_roll_joint
-    effort_limit_sim:
-      .*_ankle_pitch_joint: 35.0
-      .*_ankle_roll_joint: 35.0
-    velocity_limit_sim:
-      .*_ankle_pitch_joint: 30.0
-      .*_ankle_roll_joint: 30.0
+    # effort_limit_sim:
+    #   .*_ankle_pitch_joint: 35.0
+    #   .*_ankle_roll_joint: 35.0
+    # velocity_limit_sim:  # deg/s for Isaac Sim angular joints
+    #   .*_ankle_pitch_joint: 1718.87339
+    #   .*_ankle_roll_joint: 1718.87339
     stiffness:
       left_ankle_pitch_joint: 40.0
       left_ankle_roll_joint: 40.0
@@ -210,12 +210,12 @@ actuators:
     joint_names_expr:
       - .*_shoulder_pitch_joint
       - .*_shoulder_roll_joint
-    effort_limit_sim:
-      .*_shoulder_pitch_joint: 25.0
-      .*_shoulder_roll_joint: 25.0
-    velocity_limit_sim:
-      .*_shoulder_pitch_joint: 37.0
-      .*_shoulder_roll_joint: 37.0
+    # effort_limit_sim:
+    #   .*_shoulder_pitch_joint: 25.0
+    #   .*_shoulder_roll_joint: 25.0
+    # velocity_limit_sim:  # deg/s for Isaac Sim angular joints
+    #   .*_shoulder_pitch_joint: 2119.94384
+    #   .*_shoulder_roll_joint: 2119.94384
     stiffness:
       left_shoulder_pitch_joint: 40.0
       left_shoulder_roll_joint: 40.0
@@ -236,12 +236,12 @@ actuators:
     joint_names_expr:
       - .*_shoulder_yaw_joint
       - .*_elbow_joint
-    effort_limit_sim:
-      .*_shoulder_yaw_joint: 25.0
-      .*_elbow_joint: 25.0
-    velocity_limit_sim:
-      .*_shoulder_yaw_joint: 37.0
-      .*_elbow_joint: 37.0
+    # effort_limit_sim:
+    #   .*_shoulder_yaw_joint: 25.0
+    #   .*_elbow_joint: 25.0
+    # velocity_limit_sim:  # deg/s for Isaac Sim angular joints
+    #   .*_shoulder_yaw_joint: 2119.94384
+    #   .*_elbow_joint: 2119.94384
     stiffness:
       left_shoulder_yaw_joint: 40.0
       left_elbow_joint: 40.0
@@ -261,14 +261,14 @@ actuators:
     target_type: position
     joint_names_expr:
       - .*_wrist_.*
-    effort_limit_sim:
-      .*_wrist_yaw_joint: 5.0
-      .*_wrist_roll_joint: 25.0
-      .*_wrist_pitch_joint: 5.0
-    velocity_limit_sim:
-      .*_wrist_yaw_joint: 22.0
-      .*_wrist_roll_joint: 37.0
-      .*_wrist_pitch_joint: 22.0
+    # effort_limit_sim:
+    #   .*_wrist_yaw_joint: 5.0
+    #   .*_wrist_roll_joint: 25.0
+    #   .*_wrist_pitch_joint: 5.0
+    # velocity_limit_sim:  # deg/s for Isaac Sim angular joints
+    #   .*_wrist_yaw_joint: 1260.50715
+    #   .*_wrist_roll_joint: 2119.94384
+    #   .*_wrist_pitch_joint: 1260.50715
     stiffness:
       left_wrist_roll_joint: 40.0
       left_wrist_pitch_joint: 40.0
@@ -294,8 +294,8 @@ actuators:
       - .*_hand_index_.*_joint
       - .*_hand_middle_.*_joint
       - .*_hand_thumb_.*_joint
-    effort_limit: 300
-    velocity_limit: 100.0
+    # effort_limit: 300
+    # velocity_limit: 5729.57795  # deg/s for Isaac Sim angular joints
     stiffness:
       .*: 100.0
     damping:
