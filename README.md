@@ -17,14 +17,19 @@ This roadmap tracks our progress toward full humanoid autonomy.
     - [x] Implementation of vendor-provided locomotion policies.
     - [x] Testing stability and gait performance for Unitree H1.
     - [ ] Testing stability and gait performance for Unitree G1 (loco & teleop).
+
+## Deploy on another Repo
 - [ ] **Manipulation & Whole-Body Control (WBC)**
-    - [ ] Implementation of WBC models to coordinate complex upper-limb manipulation with stable lower-body locomotion.
+    - [ ] Implementation of WBC models (SONIC, TWIST2) to coordinate complex upper-limb manipulation with stable lower-body locomotion.
 - [ ] **Full RL Training Pipeline**
     - [ ] Data Collection and Feature Preparation.
     - [ ] Model Development and Architecture Design.
     - [ ] Training, Hyperparameter Tuning, and Evaluation.
 - [ ] **Autonomous AI Deployment**
     - [ ] Deploying trained RL/WBC models into the integrated system for real-time control.
+- [ ] **VLA Deployment**
+    - [ ] Deploying VLA model (GROOT N, pi,....)
+- [ ] **Perceptro Robotics Model Deployment**
 
 ## System Architecture & Physics
 ### Robot Assets
