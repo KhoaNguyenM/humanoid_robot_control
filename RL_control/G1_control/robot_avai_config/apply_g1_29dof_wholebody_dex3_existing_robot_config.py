@@ -289,6 +289,25 @@ def _to_usd_joint_position(joint_prim: Usd.Prim, value: float, unit: str) -> flo
     return float(value)
 
 
+def _to_usd_angular_drive_gain(value: float, input_unit: str) -> float:
+    normalized_unit = str(input_unit).strip().lower()
+    if normalized_unit in {"radian", "radians", "per_radian"}:
+        # USD angular drives use degree-based stiffness and damping units.
+        return float(value) * math.pi / 180.0
+    if normalized_unit in {"degree", "degrees", "per_degree"}:
+        return float(value)
+    raise ValueError(
+        "Unsupported angular drive gain input unit "
+        f"'{input_unit}'. Expected 'radians' or 'degrees'."
+    )
+
+
+def _to_usd_drive_gain(drive_name: str, value: float, angular_input_unit: str) -> float:
+    if drive_name == "angular":
+        return _to_usd_angular_drive_gain(value, angular_input_unit)
+    return float(value)
+
+
 def _apply_articulation_props(robot_prim: Usd.Prim, cfg: dict[str, Any]) -> None:
     if not _group_enabled(cfg, "articulation_root", "apply_articulation_root_to_robot_prim", default=False):
         return
@@ -393,6 +412,7 @@ def _apply_joint_drive(
     init_pos: Any,
     init_vel: Any,
     unit: str,
+    angular_gain_input_unit: str,
     apply_drive_properties: bool,
     apply_target_position: bool,
     apply_joint_state: bool,
@@ -413,9 +433,11 @@ def _apply_joint_drive(
 
     if apply_drive_properties and drive is not None:
         if stiffness is not None:
-            drive.CreateStiffnessAttr(float(stiffness)).Set(float(stiffness))
+            usd_stiffness = _to_usd_drive_gain(drive_name, float(stiffness), angular_gain_input_unit)
+            drive.CreateStiffnessAttr(usd_stiffness).Set(usd_stiffness)
         if damping is not None:
-            drive.CreateDampingAttr(float(damping)).Set(float(damping))
+            usd_damping = _to_usd_drive_gain(drive_name, float(damping), angular_gain_input_unit)
+            drive.CreateDampingAttr(usd_damping).Set(usd_damping)
         if effort is not None:
             drive.CreateMaxForceAttr(float(effort)).Set(float(effort))
         drive.CreateTypeAttr(str(actuator_cfg.get("drive_type", "force"))).Set(str(actuator_cfg.get("drive_type", "force")))
@@ -445,6 +467,7 @@ def _apply_actuators_and_init_state(robot_prim: Usd.Prim, cfg: dict[str, Any]) -
     joint_pos_cfg = init_state.get("joint_pos", {})
     joint_vel_cfg = init_state.get("joint_vel", {})
     joint_unit = init_state.get("joint_position_unit", "radians")
+    angular_gain_input_unit = cfg.get("actuator_units", {}).get("angular_drive_gain_input_unit", "radians")
     apply_drive_properties = _group_enabled(cfg, "joint_drive_properties", default=False)
     apply_target_position = _group_enabled(cfg, "joint_drive_targets", "apply_joint_drive_targets_from_init_state", default=False)
     apply_joint_state = _group_enabled(cfg, "joint_state", "apply_joint_state_from_init_state", default=False)
@@ -472,6 +495,7 @@ def _apply_actuators_and_init_state(robot_prim: Usd.Prim, cfg: dict[str, Any]) -
                     init_pos,
                     init_vel,
                     joint_unit,
+                    angular_gain_input_unit,
                     apply_drive_properties,
                     apply_target_position,
                     apply_joint_state,

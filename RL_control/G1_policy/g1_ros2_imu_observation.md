@@ -56,7 +56,7 @@ The measured ROS 2 graph contains:
 Topic:          /imu
 Message type:   sensor_msgs/msg/Imu
 Publisher:      1
-Frame ID:       sim_imu
+Frame ID:       pelvis_imu
 Reliability:    RELIABLE
 Durability:     VOLATILE
 ```
@@ -68,7 +68,7 @@ header:
   stamp:
     sec: ...
     nanosec: ...
-  frame_id: sim_imu
+  frame_id: pelvis_imu
 
 orientation:
   x: ...
@@ -132,19 +132,19 @@ gravity_pelvis
 The ROS message declares:
 
 ```text
-header.frame_id = "sim_imu"
+header.frame_id = "pelvis_imu"
 ```
 
 There are two possible cases.
 
-### 4.1 `sim_imu` Is Aligned with the Pelvis Frame
+### 4.1 `pelvis_imu` Is Aligned with the Pelvis Frame
 
 If the IMU local axes satisfy:
 
 ```text
-sim_imu +x = pelvis +x
-sim_imu +y = pelvis +y
-sim_imu +z = pelvis +z
+pelvis_imu +x = pelvis +x
+pelvis_imu +y = pelvis +y
+pelvis_imu +z = pelvis +z
 ```
 
 then angular velocity can be used directly:
@@ -163,7 +163,7 @@ omega_pelvis = np.array(
 The orientation quaternion can also be used directly to calculate projected
 gravity.
 
-### 4.2 `sim_imu` Is Rotated Relative to the Pelvis
+### 4.2 `pelvis_imu` Is Rotated Relative to the Pelvis
 
 If the IMU prim has a non-identity mounting rotation, both angular velocity and
 orientation must be transformed into the pelvis frame.
@@ -191,7 +191,7 @@ The transform should come from one of these sources:
 - A static transform published through `/tf_static`.
 - A known fixed rotation configured directly in the observation node.
 
-The current topic list does not contain `/tf` or `/tf_static`. If `sim_imu` is
+The current topic list does not contain `/tf` or `/tf_static`. If `pelvis_imu` is
 not aligned with the pelvis, the observation node must be given the mounting
 rotation explicitly or a TF publisher must be added.
 
@@ -621,7 +621,7 @@ class G1ImuObservationNode(Node):
         if not should_update:
             return
 
-        # Use None only after verifying sim_imu is pelvis-aligned.
+        # Use None only after verifying pelvis_imu is pelvis-aligned.
         obs_0_6 = imu_message_to_policy_observation(
             self.latest_imu,
             rotation_pelvis_from_imu=None,
@@ -662,7 +662,7 @@ orientation [x, y, z, w] =
 [0.101190, 0.684975, -0.214107, 0.689005]
 ```
 
-Assuming `sim_imu` is aligned with the pelvis:
+Assuming `pelvis_imu` is aligned with the pelvis:
 
 ```text
 scaled angular velocity =
@@ -825,7 +825,7 @@ Keep the latest IMU sample and run policy at 50 Hz simulation-time
 Incorrect:
 
 ```text
-angular velocity in sim_imu frame
+angular velocity in pelvis_imu frame
 gravity in pelvis frame
 ```
 
@@ -857,7 +857,7 @@ Before using `/imu` for policy inference, confirm:
 - [ ] `angular_velocity` is interpreted as `rad/s`.
 - [ ] ROS quaternion order is handled as `xyzw`.
 - [ ] Quaternion magnitude is close to one.
-- [ ] `sim_imu` axes are aligned with pelvis axes, or a fixed rotation is
+- [ ] `pelvis_imu` axes are aligned with pelvis axes, or a fixed rotation is
       applied.
 - [ ] Angular velocity is transformed into the pelvis frame.
 - [ ] Projected gravity is calculated from orientation.

@@ -263,7 +263,7 @@ projected_gravity ~= [0, 0, -1]
 
 Khong dung `linear_acceleration` va khong nhan `9.81`.
 
-Gia dinh `sim_imu` thang hang voi pelvis:
+Gia dinh `pelvis_imu` thang hang voi pelvis:
 
 ```text
 +x: phia truoc robot

@@ -160,6 +160,11 @@ isaaclab_runtime:
   collision_group: 0
   debug_vis: false
 
+actuator_units:
+  # Keep policy PD gains in N*m/rad and N*m*s/rad. The Isaac Sim loader
+  # converts angular stiffness and damping to degree-based USD drive units.
+  angular_drive_gain_input_unit: radians
+
 actuators:
   policy_legs:
     class_type: isaaclab.actuators:ImplicitActuatorCfg

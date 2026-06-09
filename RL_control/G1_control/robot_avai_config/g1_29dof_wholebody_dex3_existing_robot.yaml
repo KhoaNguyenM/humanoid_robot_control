@@ -123,6 +123,11 @@ isaaclab_runtime:
   collision_group: 0
   debug_vis: false
 
+actuator_units:
+  # IsaacLab/robot gains are specified per radian. The loader multiplies
+  # angular stiffness and damping by pi/180 before writing USD drive values.
+  angular_drive_gain_input_unit: radians
+
 actuators:
   legs:
     class_type: isaaclab.actuators:ImplicitActuatorCfg
