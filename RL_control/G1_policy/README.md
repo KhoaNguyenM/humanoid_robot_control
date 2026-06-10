@@ -198,13 +198,20 @@ At every synchronized 200 Hz sensor callback:
 
 1. Validate IMU and joint-state data.
 2. Run the LSTM on the first callback and then every fourth valid callback.
-3. Publish the newest 43-joint position target.
+3. Commit the callback counter and policy step after successful processing.
+4. Publish the newest 43-joint position target.
 
 The action therefore changes at 50 Hz, while the latest target is sent to
 Isaac Sim at 200 Hz when the sensor stream remains at 200 Hz. Like the H1
 example, scheduling is callback-count based. If synchronized sensor callbacks
 are dropped, the policy waits until four valid callbacks have been received,
 so its cadence becomes slower than 50 Hz in simulation time.
+
+Like the H1 controller, an inference slot is consumed only after policy
+processing succeeds. If observation construction or inference fails, the
+controller does not commit the callback count or gait phase. The next valid
+sensor callback retries the same policy step and phase. No joint command is
+published for the failed callback.
 
 If simulation time moves backwards after Stop/Play or Reset, the node resets:
 
@@ -385,6 +392,7 @@ Both controllers:
 | Action scale | `0.5` | `0.25` |
 | Gait phase | Not included | Sine/cosine, `0.8 s` period |
 | Policy scheduling | Every fourth callback | Every fourth valid callback |
+| Failed inference | Counter is not advanced | Counter, phase, and LSTM are not advanced |
 | Published joints | 19 controlled joints | All 43 G1/Dex3 joints |
 | Upper body | Controlled by policy | Held at zero |
 | Clock reset | Logs backward time | Resets LSTM and temporal state |
@@ -405,6 +413,10 @@ The node rejects a synchronized sample when:
 - A quaternion, angular velocity, joint position, or joint velocity is not
   finite.
 - The quaternion norm is zero.
+
+If policy inference fails, the node restores the LSTM memory, retains the last
+successful action, and retries the same gait phase on the next valid callback.
+The failed callback does not publish a joint command.
 
 The original deployment does not clip policy actions, and this implementation
 keeps that behavior. It also does not add a joint-target limiter. Start with

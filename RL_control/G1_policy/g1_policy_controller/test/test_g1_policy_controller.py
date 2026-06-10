@@ -249,6 +249,7 @@ class G1PolicyCoreTest(unittest.TestCase):
             decision = scheduler.update(sample_index * 5_000_000)
             if decision.infer:
                 inference_steps.append(sample_index)
+            scheduler.commit(decision)
 
         self.assertEqual(inference_steps, list(range(0, 200, 4)))
         self.assertEqual(scheduler.policy_step, 50)
@@ -264,7 +265,11 @@ class G1PolicyCoreTest(unittest.TestCase):
             205_000_000,
         ]
 
-        decisions = [scheduler.update(stamp) for stamp in sensor_stamps]
+        decisions = []
+        for stamp in sensor_stamps:
+            decision = scheduler.update(stamp)
+            decisions.append(decision)
+            scheduler.commit(decision)
 
         self.assertEqual(
             [index for index, decision in enumerate(decisions) if decision.infer],
@@ -274,16 +279,39 @@ class G1PolicyCoreTest(unittest.TestCase):
 
     def test_scheduler_resets_when_simulation_time_moves_backwards(self):
         scheduler = PolicyScheduler()
-        self.assertEqual(scheduler.update(100_000_000).policy_step, 1)
-        self.assertFalse(scheduler.update(105_000_000).infer)
-        self.assertFalse(scheduler.update(110_000_000).infer)
-        self.assertFalse(scheduler.update(115_000_000).infer)
-        self.assertEqual(scheduler.update(120_000_000).policy_step, 2)
+        decision = scheduler.update(100_000_000)
+        self.assertEqual(decision.policy_step, 1)
+        scheduler.commit(decision)
+        for stamp in [105_000_000, 110_000_000, 115_000_000]:
+            decision = scheduler.update(stamp)
+            self.assertFalse(decision.infer)
+            scheduler.commit(decision)
+        decision = scheduler.update(120_000_000)
+        self.assertEqual(decision.policy_step, 2)
+        scheduler.commit(decision)
 
         decision = scheduler.update(0)
         self.assertTrue(decision.reset)
         self.assertTrue(decision.infer)
         self.assertEqual(decision.policy_step, 1)
+        scheduler.commit(decision)
+        self.assertEqual(scheduler.policy_step, 1)
+        self.assertEqual(scheduler.callback_count, 1)
+
+    def test_scheduler_retries_same_phase_when_inference_is_not_committed(self):
+        scheduler = PolicyScheduler()
+
+        failed_decision = scheduler.update(0)
+        self.assertTrue(failed_decision.infer)
+        self.assertEqual(failed_decision.policy_step, 1)
+        self.assertEqual(scheduler.policy_step, 0)
+        self.assertEqual(scheduler.callback_count, 0)
+
+        retry_decision = scheduler.update(5_000_000)
+        self.assertTrue(retry_decision.infer)
+        self.assertEqual(retry_decision.policy_step, 1)
+        scheduler.commit(retry_decision)
+
         self.assertEqual(scheduler.policy_step, 1)
         self.assertEqual(scheduler.callback_count, 1)
 

@@ -213,13 +213,28 @@ class PolicyScheduler:
 
         self.last_sensor_stamp_ns = sensor_stamp_ns
         should_infer = self.callback_count % POLICY_DECIMATION == 0
-        self.callback_count += 1
         if not should_infer:
             return PolicyStepDecision(reset=reset, infer=False, policy_step=None)
 
-        self.policy_step += 1
         return PolicyStepDecision(
             reset=reset,
             infer=True,
-            policy_step=self.policy_step,
+            policy_step=self.policy_step + 1,
         )
+
+    def commit(self, decision: PolicyStepDecision) -> None:
+        if decision.infer:
+            expected_policy_step = self.policy_step + 1
+            if decision.policy_step != expected_policy_step:
+                raise RuntimeError(
+                    "cannot commit stale policy decision: "
+                    f"expected step {expected_policy_step}, "
+                    f"got {decision.policy_step}"
+                )
+            self.policy_step = expected_policy_step
+        elif decision.policy_step is not None:
+            raise RuntimeError(
+                "non-inference decision must not contain a policy step"
+            )
+
+        self.callback_count += 1

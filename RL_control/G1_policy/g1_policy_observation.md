@@ -705,6 +705,11 @@ PD controller holds q_target_k until the next policy step
 Because the observation contains `action_(k-1)`, `action_k` must not be written
 into `obs[33:45]` before inference.
 
+The ROS controller treats each policy step as a prepare/commit operation. The
+candidate phase, LSTM update, previous action, and policy counter are committed
+only after inference succeeds. If inference fails, LSTM memory is restored and
+the next valid sensor callback retries the same `phase_k`.
+
 ## 11. Invariants for a New Controller
 
 1. The input tensor must have shape `[batch, 47]`, normally `[1, 47]`.
@@ -727,6 +732,7 @@ policy.reset_memory()
 11. Do not insert the 17 waist/arm joints into the 47-D observation.
 12. Changing a scale, joint order, or update rate breaks the original
     observation contract and can destabilize the existing policy.
+13. Do not advance the phase or policy counter when inference fails.
 
 ## 12. Current Deployment Differences and Risks
 

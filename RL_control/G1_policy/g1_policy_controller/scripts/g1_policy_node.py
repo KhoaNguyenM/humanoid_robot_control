@@ -170,16 +170,16 @@ class G1PolicyController(Node):
         joint_position, joint_velocity, quaternion, angular_velocity = sensor_data
         if decision.infer:
             assert decision.policy_step is not None
-            observation = build_observation(
-                angular_velocity=angular_velocity,
-                quaternion_wxyz=quaternion,
-                command=self.command,
-                joint_position=joint_position,
-                joint_velocity=joint_velocity,
-                previous_action=self.previous_action,
-                policy_step=decision.policy_step,
-            )
             try:
+                observation = build_observation(
+                    angular_velocity=angular_velocity,
+                    quaternion_wxyz=quaternion,
+                    command=self.command,
+                    joint_position=joint_position,
+                    joint_velocity=joint_velocity,
+                    previous_action=self.previous_action,
+                    policy_step=decision.policy_step,
+                )
                 action = self._compute_action(observation)
             except (RuntimeError, ValueError) as error:
                 self.get_logger().error(f"Policy inference failed: {error}")
@@ -188,6 +188,8 @@ class G1PolicyController(Node):
             self.action = action
             self.previous_action = action.copy()
             self.has_policy_action = True
+
+        self.scheduler.commit(decision)
 
         if self.has_policy_action:
             target_positions = build_full_joint_targets(
